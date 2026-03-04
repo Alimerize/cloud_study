@@ -1,0 +1,23 @@
+name: Code Quality Check # Имя робота
+
+on: [push] # Срабатывать на каждый твой "push" в GitHub
+
+jobs:
+  check-my-code:
+    runs-on: ubuntu-latest # Робот берет чистый компьютер в облаке
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4 # Робот копирует твой код к себе
+
+      - name: Set up Python
+        uses: actions/setup-python@v5 # Робот устанавливает Python
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt # Робот качает библиотеки
+
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
