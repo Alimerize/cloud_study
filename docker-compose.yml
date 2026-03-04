@@ -1,0 +1,33 @@
+version: '3.8' # Версия "языка" конфигурации
+
+services:
+  # 1. Наша база данных
+  db:
+    image: postgres:15-alpine
+    container_name: cloud-db-new
+    environment:
+      POSTGRES_USER: alimerize
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: cloud_study
+    ports:
+      - "5432:5432"
+
+  # 2. Наш эмулятор облака
+  s3:
+    image: localstack/localstack
+    container_name: localstack-new
+    ports:
+      - "4566:4566"
+
+  # 3. Твой магический "Комбайн"
+  app:
+    build: . # Собрать образ из текущей папки (где наш Dockerfile)
+    container_name: my-manager-app
+    depends_on:
+      - db
+      - s3
+    environment:
+      # ВНИМАНИЕ: тут мы вместо localhost пишем имена сервисов выше!
+      DB_HOST: db
+      S3_ENDPOINT: http://s3:4566
+    network_mode: "host" # Пока оставим так для простоты связи с WSL

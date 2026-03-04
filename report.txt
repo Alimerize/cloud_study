@@ -1,0 +1,1 @@
+Список файлов: report.txt, cleaner.py, venv
