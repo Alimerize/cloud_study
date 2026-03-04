@@ -20,4 +20,6 @@ jobs:
       - name: Lint with flake8
         run: |
           pip install flake8
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Добавляем флаг --exclude, чтобы он не лез в виртуальную среду
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv
+
